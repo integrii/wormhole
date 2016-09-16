@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	// Listen on TCP port 2000 on all interfaces.
+	// Listen on TCP port 443 on all interfaces.
 	l, err := net.Listen("tcp", ":443")
 	if err != nil {
 		log.Fatal(err)
