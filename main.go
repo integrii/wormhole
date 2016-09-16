@@ -23,20 +23,21 @@ func main() {
 		// The loop then returns to accepting, so that
 		// multiple connections may be served concurrently.
 		go func(c net.Conn) {
+			defer c.Close()
 			log.Println("Opening wormhole")
+
 			// connect to the destination tcp port
 			destConn, err := net.Dial("tcp", "localhost:22")
 			if err != nil {
 				log.Fatal("Error connecting to destination port")
 			}
-			log.Println("Wormhole linked")
+			defer destConn.Close()
+			log.Println("Wormhole open")
+
 			go func() { io.Copy(c, destConn) }()
 			io.Copy(destConn, c)
 
 			log.Println("Stopping wormhole")
-			// Shut down the connection.
-			c.Close()
-			destConn.Close()
 		}(conn)
 	}
 }
