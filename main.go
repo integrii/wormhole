@@ -36,6 +36,7 @@ func main() {
 			log.Println("Stopping wormhole")
 			// Shut down the connection.
 			c.Close()
+			destConn.Close()
 		}(conn)
 	}
 }
