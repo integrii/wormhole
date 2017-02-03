@@ -26,6 +26,6 @@ Usage of ./wormhole:
 
 This opens a wormhole from all local interfaces on port `22` to `8.8.8.8` on port `2222`.
 
-`./wormhole -from 0.0.0.0:22 8.8.8.8:2222`
+`./wormhole -from 0.0.0.0:22 -to 8.8.8.8:2222`
 
 You can now SSH to `127.0.0.1:22` and it will come out at `8.8.8.8:2222`.
