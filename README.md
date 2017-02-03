@@ -13,7 +13,6 @@ Just execute the binary from your terminal with a `-?` flag to see help that loo
 
 ```
 ./wormhole -?
-flag provided but not defined: -?
 Usage of ./wormhole:
   -from string
     	The address and port that wormhole should listen on.  Connections enter here. (default "0.0.0.0:443")
