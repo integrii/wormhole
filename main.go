@@ -28,7 +28,8 @@ func main() {
 		// Wait for a connection.
 		c, err := l.Accept()
 		if err != nil {
-			log.Fatal(err)
+			log.Println("Error establshing incoming connection:",err)
+			continue
 		}
 
 		// handle the connection in a goroutine
@@ -45,7 +46,8 @@ func wormhole(c net.Conn) {
 	// connect to the destination tcp port
 	destConn, err := net.Dial("tcp", *to)
 	if err != nil {
-		log.Fatal("Error connecting to destination port")
+		log.Println("Error connecting to destination port:",err)
+		return
 	}
 	defer destConn.Close()
 	log.Println("Wormhole open from", c.RemoteAddr())
@@ -53,5 +55,5 @@ func wormhole(c net.Conn) {
 	go func() { io.Copy(c, destConn) }()
 	io.Copy(destConn, c)
 
-	log.Println("Stopping wormhole from", c.RemoteAddr())
+	log.Println("Closing wormhole from", c.RemoteAddr())
 }
