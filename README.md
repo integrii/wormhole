@@ -2,7 +2,7 @@
 
 ![Wormhole Icon](https://raw.githubusercontent.com/integrii/wormhole/master/icon.png)
 
-Very simple [go](https://golang.org) program that transparently redirects TCP connections from one TCP socket to another.
+Very fast and simple [go](https://golang.org) program that transparently proxies any raw TCP connection from one TCP socket to another.  The wormhole destination is the same every time and specified by flags at startup time.
 
 ## installation
 `go get -u github.com/integrii/wormhole`
