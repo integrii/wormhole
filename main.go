@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"time"
 )
 
 var from *string
@@ -17,6 +18,7 @@ func init() {
 }
 
 func main() {
+	log.Println("Starting up.  Forwarding connections from", *from, "to", *to)
 
 	// Listen on the specified TCP port on all interfaces.
 	l, err := net.Listen("tcp", *from)
@@ -28,9 +30,10 @@ func main() {
 		// Wait for a connection.
 		c, err := l.Accept()
 		if err != nil {
-			log.Println("Error establshing incoming connection:",err)
+			log.Println("Error establshing incoming connection:", err)
 			continue
 		}
+		log.Println("Client connected from", c.RemoteAddr())
 
 		// handle the connection in a goroutine
 		go wormhole(c)
@@ -42,11 +45,12 @@ func main() {
 func wormhole(c net.Conn) {
 	defer c.Close()
 	log.Println("Opening wormhole from", c.RemoteAddr())
+	start := time.Now()
 
 	// connect to the destination tcp port
 	destConn, err := net.Dial("tcp", *to)
 	if err != nil {
-		log.Println("Error connecting to destination port:",err)
+		log.Println("Error connecting to destination port:", err)
 		return
 	}
 	defer destConn.Close()
@@ -55,5 +59,7 @@ func wormhole(c net.Conn) {
 	go func() { io.Copy(c, destConn) }()
 	io.Copy(destConn, c)
 
-	log.Println("Closing wormhole from", c.RemoteAddr())
+	end := time.Now()
+	duration := start.Sub(end)
+	log.Println("Closing wormhole from", c.RemoteAddr(), "after", duration)
 }
