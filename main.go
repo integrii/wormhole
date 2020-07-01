@@ -1,27 +1,37 @@
 package main
 
 import (
-	"flag"
 	"io"
 	"log"
 	"net"
+	"os"
 	"time"
+
+	"github.com/integrii/flaggy"
 )
 
-var from *string
-var to *string
+// Listener is the listen address for incoming connections
+var Listener string
+
+// Destination is the target that connections will be forwarded to
+var Destination string
 
 func init() {
-	from = flag.String("from", "0.0.0.0:443", "The address and port that wormhole should listen on.  Connections enter here.")
-	to = flag.String("to", "127.0.0.1:80", "Specifies the address and port that wormhole should redirect TCP connections to.  Connections exit here.")
-	flag.Parse()
+
+	Listener = os.Getenv("LISTENER")
+	Destination = os.Getenv("DESTINATION")
+
+	flaggy.String(&Listener, "f", "from", "The address and port that wormhole should listen on.  Connections enter here.")
+	flaggy.String(&Destination, "t", "to", "Specifies the address and port that wormhole should redirect TCP connections to.  Connections exit here.")
+	flaggy.Parse()
+
 }
 
 func main() {
-	log.Println("Starting up.  Forwarding connections from", *from, "to", *to)
+	log.Println("Starting up.  Forwarding connections from", Listener, "to", Destination)
 
 	// Listen on the specified TCP port on all interfaces.
-	l, err := net.Listen("tcp", *from)
+	l, err := net.Listen("tcp", Listener)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,7 +58,7 @@ func wormhole(c net.Conn) {
 	start := time.Now()
 
 	// connect to the destination tcp port
-	destConn, err := net.Dial("tcp", *to)
+	destConn, err := net.Dial("tcp", Destination)
 	if err != nil {
 		log.Println("Error connecting to destination port:", err)
 		return
@@ -60,6 +70,6 @@ func wormhole(c net.Conn) {
 	io.Copy(destConn, c)
 
 	end := time.Now()
-	duration := start.Sub(end)
+	duration := end.Sub(start)
 	log.Println("Closing wormhole from", c.RemoteAddr(), "after", duration)
 }

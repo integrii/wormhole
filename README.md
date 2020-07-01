@@ -28,3 +28,10 @@ This opens a wormhole from all local interfaces on port `22` to `8.8.8.8` on por
 `./wormhole -from 0.0.0.0:22 -to 8.8.8.8:2222`
 
 You can now SSH to `127.0.0.1:22` and it will come out at `8.8.8.8:2222`.
+
+
+### Docker example
+
+```docker
+docker run -d --restart=Always -p 8000:8000 integrii/wormhole -f 0.0.0.0:8000 -t google.com:80
+```
