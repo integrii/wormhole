@@ -33,5 +33,5 @@ You can now SSH to `127.0.0.1:22` and it will come out at `8.8.8.8:2222`.
 ### Docker example
 
 ```docker
-docker run -d --restart=Always -p 8000:8000 integrii/wormhole -f 0.0.0.0:8000 -t google.com:80
+docker run -d --restart=always -p 8000:8000 integrii/wormhole -f 0.0.0.0:8000 -t google.com:80
 ```
