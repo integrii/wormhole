@@ -28,6 +28,14 @@ func init() {
 }
 
 func main() {
+	
+	if len(Listener) == 0 {
+		Listener="127.0.0.1:7777"
+	}
+	if len(Destination) == 0 {
+		log.Fatalln("You must specify a destination with --to.  Example: worhole --from 127.0.0.1:7777 --to 127.0.0.1:77")
+	}
+	
 	log.Println("Starting up.  Forwarding connections from", Listener, "to", Destination)
 
 	// Listen on the specified TCP port on all interfaces.
