@@ -4,8 +4,8 @@
 
 Very fast and simple [go](https://golang.org) program that transparently proxies incoming TCP connections to a specified ip:port.  The TCP destination is the same every time and specified by flags at startup time.  Fun for all kinds of things.
 
-## installation (go 1.16+)
-`go install github.com/integrii/wormhole`
+## installation
+`go get github.com/integrii/wormhole`
 
 ## usage
 
